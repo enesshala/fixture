@@ -22,6 +22,12 @@ if (isset($_GET['searchquery'])) {
     case 'tasks':
       include "tasks/tasks.php";
       break;
+    case 'mytasks':
+      include "tasks/mytasks.php";
+      break;
+    case 'viewtask':
+      include "tasks/viewtask.php";
+      break;
     case 'profile':
       include "profile/profile.php";
       break;

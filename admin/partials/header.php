@@ -34,6 +34,7 @@ $profile_picture = $user["user_profile"];
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="" href="css/style.css">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -74,6 +75,11 @@ $profile_picture = $user["user_profile"];
                 <a class="nav-link" href="?id=tasks">
                     <i class="fas fa-tasks"></i>
                     <span>Tasks</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="?id=mytasks">
+                    <i class="fas fa-folder-open"></i>
+                    <span>My Tasks</span></a>
             </li>
 
 
@@ -280,9 +286,9 @@ $profile_picture = $user["user_profile"];
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="?id=mytasks">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
+                                    My Tasks
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="../logout.php">
