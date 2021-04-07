@@ -1,5 +1,5 @@
 <?php
-include_once '../config/dbconnection.php';
+include_once './config/dbconnection.php';
 $posts = $connection->query("SELECT posts.*, users.username, users.user_profile FROM posts INNER JOIN users ON posts.post_author = users.user_id")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 

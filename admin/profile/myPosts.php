@@ -13,7 +13,7 @@ if (isset($_POST['submit_post'])) {
     }
 
     if (empty($errors)) {
-        $query = $connection->prepare("INSERT INTO personalPost (description, author_id) VALUES (:description, :author) ");
+        $query = $connection->prepare("INSERT INTO personalpost (description, author_id) VALUES (:description, :author) ");
         $query->bindValue(':description', $description);
         $query->bindValue(':author', $userid);
 
@@ -23,7 +23,7 @@ if (isset($_POST['submit_post'])) {
     }
 }
 
-$query = $connection->prepare("SELECT * FROM personalPost WHERE author_id = (SELECT user_id FROM users  WHERE user_id = '$id') ORDER BY created_at DESC");
+$query = $connection->prepare("SELECT * FROM personalpost WHERE author_id = (SELECT user_id FROM users  WHERE user_id = '$id') ORDER BY created_at DESC");
 $query->execute();
 $posts = $query->fetchAll(PDO::FETCH_ASSOC);
 

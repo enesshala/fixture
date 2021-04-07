@@ -31,12 +31,10 @@ if (isset($_POST['submit_update-personalinfo'])) {
         $query->execute();
     }
 
-
-
     $user = $query->fetch(PDO::FETCH_ASSOC);
     $user_name = $user['username'] ?? null;
 
-    if ((($username === $currentUsername) || (($username === $currentUsername) && (trim($about === "")))))
+    if ((($username === $currentUsername) && ($about === $currentBio)))
         $errors[] = "Please make some changes!";
     if (trim($username) === "")
         $errors[] = "Username is required!";
