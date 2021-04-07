@@ -6,6 +6,12 @@ $query->bindValue(":id", $userid);
 $query->execute();
 $currentUser = $query->fetch(PDO::FETCH_ASSOC);
 
+$query2 = $connection->prepare("SELECT * FROM tasks WHERE task_author = (SELECT user_id FROM users  WHERE user_id = :id) ORDER BY created_at DESC");
+$query2->bindValue(":id", $userid);
+$query2->execute();
+$tasks = $query2->fetch(PDO::FETCH_ASSOC);
+
+
 $errors = [];
 if (isset($_POST['tsubmit'])) {
     $tName = $_POST['tname'];
@@ -23,15 +29,15 @@ if (isset($_POST['tsubmit'])) {
 
     $filePath = '';
 
-    if (!is_dir('/users')) {
-        mkdir('/users');
+    if (!is_dir('tasks/users')) {
+        mkdir('tasks/users');
     }
 
     if ($file && file_exists($_FILES['tfile']['tmp_name'])) {
         // if ($currentUser['user_profile']) {
         //     unlink($currentUser['user_profile']);
         // }
-        $filePath = 'users/' . $currentUser["username"] . '/' . $_FILES['tfile']['name'];
+        $filePath = 'tasks/users/' . $currentUser["username"] . '/' . $_FILES['tfile']['name'];
 
         if (!is_dir(dirname($filePath)))
             mkdir(dirname($filePath));
@@ -40,7 +46,7 @@ if (isset($_POST['tsubmit'])) {
         $errors[] = 'Task File is required!';
     }
 
-    if (false) {
+    if (empty($errors)) {
         $query = $connection->prepare("INSERT INTO tasks (task_title, task_desc, task_author, task_file) VALUES (:tName, :tDesc, :tAuth, :tFile) ");
         $query->bindValue(':tName', $tName);
         $query->bindValue(':tDesc', $tDesc);
@@ -105,81 +111,24 @@ if (isset($_POST['tsubmit'])) {
     </div>
 
     <!-- tasks -->
-    <div class="col-12 mt-1">
-        <div class="card border-bottom-primary shadow h-100 py-1">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 mt-1">
-        <div class="card border-bottom-primary shadow h-100 py-1">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+    <?php foreach ($tasks as $task) : ?>
+        <div class="col-12 mt-1">
+            <div class="card border-bottom-primary shadow h-100 py-1">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><?php echo $task['task_title'] ?></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 mt-1">
-        <div class="card border-bottom-primary shadow h-100 py-1">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 mt-1">
-        <div class="card border-bottom-primary shadow h-100 py-1">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 mt-1">
-        <div class="card border-bottom-primary shadow h-100 py-1">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php endforeach; ?>
+
 
 </div>
 
