@@ -1,3 +1,58 @@
+<?php
+$userid = $_SESSION['user_id'];
+
+$query = $connection->prepare("SELECT * FROM users WHERE user_id = :id");
+$query->bindValue(":id", $userid);
+$query->execute();
+$currentUser = $query->fetch(PDO::FETCH_ASSOC);
+
+$errors = [];
+if (isset($_POST['tsubmit'])) {
+    $tName = $_POST['tname'];
+    $tDesc = $_POST['tdesc'];
+
+    if (!$tName) {
+        $errors[] = 'Task Name is required!';
+    }
+
+    if (!$tDesc) {
+        $errors[] = 'Task Description is required!';
+    }
+
+    $file = $_FILES['tfile'] ?? null;
+
+    $filePath = '';
+
+    if (!is_dir('/users')) {
+        mkdir('/users');
+    }
+
+    if ($file && file_exists($_FILES['tfile']['tmp_name'])) {
+        // if ($currentUser['user_profile']) {
+        //     unlink($currentUser['user_profile']);
+        // }
+        $filePath = 'users/' . $currentUser["username"] . '/' . $_FILES['tfile']['name'];
+
+        if (!is_dir(dirname($filePath)))
+            mkdir(dirname($filePath));
+        move_uploaded_file($_FILES['tfile']['tmp_name'], $filePath);
+    } else {
+        $errors[] = 'Task File is required!';
+    }
+
+    if (false) {
+        $query = $connection->prepare("INSERT INTO tasks (task_title, task_desc, task_author, task_file) VALUES (:tName, :tDesc, :tAuth, :tFile) ");
+        $query->bindValue(':tName', $tName);
+        $query->bindValue(':tDesc', $tDesc);
+        $query->bindValue(':tAuth', $userid);
+        $query->bindValue(':tFile', $filePath);
+
+        $query->execute();
+        $successMessage = "Successfully created a new task!";
+    }
+}
+?>
+
 <div class="container-fluid">
     <div class="row"> <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal">Create a Task <i class="fas fa-folder-plus"></i></button> </div> <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -36,7 +91,9 @@
                                 <div id="step-4" class="">
                                     <div class="row">
                                         <div class="col-12"><input type="submit" name="tsubmit" class="btn btn-lg btn-success" value="Create Task"></div>
-                                        <div class="col-md-12"> <span>Thanks for creating a new task! <br>You are creating jobs for other people!</span> </div>
+                                        <div class="col-md-12">
+                                            <span><br>You are creating jobs for other people!</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
