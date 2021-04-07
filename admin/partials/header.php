@@ -29,6 +29,7 @@ $profile_picture = $user["user_profile"];
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/smart_wizard_theme_arrows.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -70,9 +71,9 @@ $profile_picture = $user["user_profile"];
                 Category 1
             </div>
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Link1</span></a>
+                <a class="nav-link" href="?id=tasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tasks</span></a>
             </li>
 
 

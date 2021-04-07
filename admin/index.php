@@ -19,6 +19,9 @@ if (isset($_GET['searchquery'])) {
     case 'home':
       include "dashboard.php";
       break;
+    case 'tasks':
+      include "tasks/tasks.php";
+      break;
     case 'profile':
       include "profile/profile.php";
       break;
