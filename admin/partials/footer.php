@@ -47,6 +47,11 @@
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
 
+<script>
+  CKEDITOR.replace('myPost');
+  config.editorplaceholder = 'Type your comment…';
+</script>
+
 </body>
 
 </html>

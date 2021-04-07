@@ -6,15 +6,21 @@ $query->bindValue(":id", $userid);
 $query->execute();
 $currentUser = $query->fetch(PDO::FETCH_ASSOC);
 
+
 $currentUsername = $currentUser["username"];
 $currentEmail = $currentUser["user_email"];
 $currentPassword = $currentUser["user_password"];
 $currentProfilePic = $currentUser["user_profile"];
 $currentBio = $currentUser["about_user"];
-$currentFacebook = $currentUser["facebook_link"];
-$currentGithub = $currentUser["github_link"];
+$currentName = $currentUser["name"];
+$currentSurname = $currentUser["surname"];
+$currentAddress = $currentUser["address"];
+$currentCity = $currentUser["city"];
+$currentState = $currentUser["state"];
+$currentZip = $currentUser["zipcode"];
 
 $errors = [];
+$errors2 = [];
 if (isset($_POST['submit_update-personalinfo'])) {
     $username = $_POST['username'];
     $about = $_POST['description'];
@@ -88,14 +94,66 @@ if (isset($_POST['submit_photo'])) {
         $errors[] = "Please insert a photo!";
     }
 }
+
+
+// personal info
+if (isset($_POST['submit_personal-info'])) {
+    $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $email = $_POST['email'];
+    $address = $_POST['address'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zipcode = $_POST['zipcode'];
+
+
+    $user_name = $currentUser['name'] ?? null;
+    $user_surname = $currentUser['surname'] ?? null;
+    $user_email = $currentUser['user_email'] ?? null;
+    $user_address = $currentUser['address'] ?? null;
+    $user_city = $currentUser['city'] ?? null;
+    $user_state = $currentUser['state'] ?? null;
+    $user_zip = $currentUser['zip'] ?? null;
+
+    if ((($name === $user_name) && ($surname === $user_surname) && ($email === $user_email)))
+        $errors2[] = "Please make some changes!";
+    if (trim($name) === "")
+        $errors2[] = "Name is required!";
+    if (trim($surname) === "")
+        $errors2[] = "Surname is required!";
+    if (trim($email) === "")
+        $errors2[] = "Email is required!";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        $errors2[] = "Invalid email format";
+
+    if (empty($errors2)) {
+        $query = $connection->prepare("UPDATE users SET name = :name,
+                                        surname = :surname,
+                                        user_email = :email, 
+                                        address = :address, 
+                                        city = :city,
+                                        state = :state,
+                                        zipcode = :zipcode
+                                        WHERE user_id = :id");
+        $query->bindValue(':id', $userid);
+        $query->bindValue(':name', $name);
+        $query->bindValue(':surname', $surname);
+        $query->bindValue(':email', $email);
+        $query->bindValue(':address', $address);
+        $query->bindValue(':city', $city);
+        $query->bindValue(':state', $state);
+        $query->bindValue(':zipcode', $zipcode);
+
+        $query->execute();
+
+        $successMessage2 = "Successfully Changed your Private Info! Wait 3 Seconds!";
+        header("refresh:3;url=?id=settings");
+    }
+}
 ?>
 
 <div class="container-fluid">
-    <?php foreach ($errors as $error) : ?>
-        <div class="alert alert-danger" role="alert">
-            <?php echo $error; ?>
-        </div>
-    <?php endforeach; ?>
+
 
     <div class="container p-0">
         <h1 class="h3 mb-3">Settings</h1>
@@ -164,6 +222,13 @@ if (isset($_POST['submit_photo'])) {
                             <div class="card-body">
 
                                 <div class="row">
+                                    <div class="col-12">
+                                        <?php foreach ($errors as $error) : ?>
+                                            <div class="alert alert-danger" role="alert">
+                                                <?php echo $error; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                     <?php if ((empty($errors) && isset($_POST["submit_update-personalinfo"])) || (empty($errors) && isset($_POST["submit_photo"]))) : ?>
                                         <div class="alert alert-success col-12" role="alert">
                                             <?php echo $successMessage; ?>
@@ -205,7 +270,7 @@ if (isset($_POST['submit_photo'])) {
                         <div class="card my-4">
                             <div class="card-header">
                                 <div class="card-actions float-right">
-                                    <div class="dropdown show">
+                                    <!-- <div class="dropdown show">
                                         <a href="#" data-toggle="dropdown" data-display="static">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
                                                 <circle cx="12" cy="12" r="1"></circle>
@@ -219,52 +284,66 @@ if (isset($_POST['submit_photo'])) {
                                             <a class="dropdown-item" href="#">Another action</a>
                                             <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <h5 class="card-title mb-0">Private info</h5>
                             </div>
                             <div class="card-body">
-                                <form>
+                                <form action="?id=settings" method="POST">
+                                    <div class="col-12">
+                                        <?php foreach ($errors2 as $error) : ?>
+                                            <div class="alert alert-danger" role="alert">
+                                                <?php echo $error; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php if ((empty($errors2) && isset($_POST["submit_personal-info"]))) : ?>
+                                        <div class="alert alert-success col-12" role="alert">
+                                            <?php echo $successMessage2; ?>
+                                        </div>
+                                    <?php endif; ?>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="inputFirstName">First name</label>
-                                            <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+                                            <input type="text" name="name" class="form-control" id="inputFirstName" placeholder="First name" value="<?php echo $currentName ?>">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="inputLastName">Last name</label>
-                                            <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+                                            <input type="text" name="surname" class="form-control" value="<?php echo $currentSurname ?>" id="inputLastName" placeholder="Last name">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputEmail4">Email</label>
-                                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                                        <input type="email" name="email" value="<?php echo $currentEmail ?>" class="form-control" id="inputEmail4" placeholder="Email">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputAddress">Address</label>
-                                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                                        <input type="text" name="address" class="form-control" value="<?php echo $currentAddress ?>" id="inputAddress" placeholder="1234 Main St">
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="inputAddress2">Address 2</label>
                                         <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                                    </div>
+                                    </div> -->
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="inputCity">City</label>
-                                            <input type="text" class="form-control" id="inputCity">
+                                            <input type="text" name="city" class="form-control" id="inputCity" value="<?php echo $currentCity ?>">
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="inputState">State</label>
-                                            <select id="inputState" class="form-control">
-                                                <option selected="">Choose...</option>
-                                                <option>...</option>
+                                            <select id="inputState" name="state" class="form-control">
+                                                <option selected value="kosove">Kosove</option>
+                                                <option value="shqiperi">Shqiperi</option>
+                                                <option value="maqedoni">Maqedoni</option>
+                                                <option>............</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="inputZip">Zip</label>
-                                            <input type="text" class="form-control" id="inputZip">
+                                            <input type="number" name="zipcode" class="form-control" id="inputZip" value="<?php echo $currentZip ?>">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" name="submit_personal-info" class="btn btn-primary">Save changes</button>
                                 </form>
 
                             </div>

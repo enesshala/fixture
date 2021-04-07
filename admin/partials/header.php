@@ -24,12 +24,12 @@ $profile_picture = $user["user_profile"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>FIXTURE - <?php echo $_GET['id'] ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" type="" href="css/style.css">
@@ -47,9 +47,9 @@ $profile_picture = $user["user_profile"];
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="?id=home">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-laptop-house"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">FIXTU<sup>RE</sup></div>
             </a>
 
             <!-- Divider -->
@@ -72,7 +72,7 @@ $profile_picture = $user["user_profile"];
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>TEST1</span></a>
+                    <span>Link1</span></a>
             </li>
 
 
@@ -91,7 +91,7 @@ $profile_picture = $user["user_profile"];
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>TEST1</span></a>
+                    <span>Link2</span></a>
             </li>
 
             <!-- Divider -->
@@ -265,9 +265,10 @@ $profile_picture = $user["user_profile"];
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user['username'] ?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user['username']; ?><br><small><?php echo $user['name'] . " " . $user['surname']; ?></small></span>
                                 <img class="img-profile rounded-circle" src="<?php echo $user['user_profile']; ?>">
                             </a>
+
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="?id=profile">

@@ -177,7 +177,7 @@ if (isset($_COOKIE['email']) && isset($_COOKIE['password'])) {
         <input type="text" name="email" placeholder="Email" value="<?php echo isset($_POST['submit_login']) ? $email : (isset($_COOKIE['email']) ? $rememberEmail : ""); ?>" />
         <input type="password" name="password" placeholder="Password" value="<?php echo isset($_POST['submit_login']) ? $password : (isset($_COOKIE['password']) ? $rememberPw : ""); ?>" />
         <div class="remember_me">
-          <input type="checkbox" name="remember">Remember Me
+          <input type="checkbox" checked name="remember">Remember Me
         </div>
         <button type="submit" name="submit_login">Sign In</button>
         <a href="index.php">Main Page</a>

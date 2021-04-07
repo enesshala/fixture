@@ -1,13 +1,13 @@
 <div class="profile-container">
     <div class="profile-sidebar">
         <div class="desktop-sticky-top">
-            <h4><?php echo $user['username']; ?></h4>
+            <h4><?php echo $user['name'] . " " . $user['surname']; ?></h4>
             <div class="font-weight-600 mb-3 text-muted mt-n2">@<?php echo $user['username']; ?></div>
             <p>
                 <?php echo $user['about_user']; ?>
             </p>
-            <div class="mb-1"><i class="fa fa-map-marker-alt fa-fw text-muted"></i> New York, NY</div>
-            <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i> seantheme.com/studio</div>
+            <div class="mb-1"><i class="fa fa-map-marker-alt fa-fw text-muted"></i> <?php echo $user['address']; ?></div>
+            <div class="mb-3"><i class="fa fa-link fa-fw text-muted"></i><a href="<?php echo $user['facebook_link'] ?>"> Facebook</a></div>
             <hr class="mt-4 mb-4" />
         </div>
     </div>
