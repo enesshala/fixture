@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbName = "grooveAppDB";
+$dbName = "fixture";
 
 try {
    $connection = new PDO("mysql:host=$servername;dbname=$dbName", $username, $password);
