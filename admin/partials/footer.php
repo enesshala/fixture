@@ -43,6 +43,7 @@
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.smartWizard.min.js"></script>
 
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
@@ -50,6 +51,21 @@
 <script>
   CKEDITOR.replace('myPost');
   config.editorplaceholder = 'Type your comment…';
+</script>
+
+<script>
+  $(document).ready(function() {
+
+    $('#smartwizard').smartWizard({
+      selected: 0,
+      theme: 'arrows',
+      autoAdjustHeight: true,
+      transitionEffect: 'fade',
+      showStepURLhash: false,
+
+    });
+
+  });
 </script>
 
 </body>
