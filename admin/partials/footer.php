@@ -52,6 +52,12 @@
 <script src="js/sb-admin-2.min.js"></script>
 
 <script>
+  $(function() {
+    $('[data-toggle="popover"]').popover()
+  })
+</script>
+
+<script>
   CKEDITOR.replace('myPost');
   config.editorplaceholder = 'Type your comment…';
 </script>

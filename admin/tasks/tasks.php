@@ -6,10 +6,11 @@ $query->bindValue(":id", $userid);
 $query->execute();
 $currentUser = $query->fetch(PDO::FETCH_ASSOC);
 
-$query2 = $connection->prepare("SELECT * FROM tasks WHERE task_author = (SELECT user_id FROM users  WHERE user_id = :id) ORDER BY created_at DESC");
+$query2 = $connection->prepare("SELECT * FROM tasks t inner join users u on t.task_author = u.user_id WHERE t.task_author = u.user_id AND t.task_status = 'pending' ORDER BY t.created_at DESC");
+// $query2 = $connection->prepare("SELECT * FROM tasks WHERE task_author = (SELECT user_id FROM users  WHERE user_id = :id) ORDER BY created_at DESC");
 $query2->bindValue(":id", $userid);
 $query2->execute();
-$tasks = $query2->fetch(PDO::FETCH_ASSOC);
+$tasks = $query2->fetchAll(PDO::FETCH_ASSOC);
 
 
 $errors = [];
@@ -55,12 +56,16 @@ if (isset($_POST['tsubmit'])) {
 
         $query->execute();
         $successMessage = "Successfully created a new task!";
+        header("Location: ?id=tasks");
     }
 }
 ?>
 
 <div class="container-fluid">
-    <div class="row"> <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#exampleModal">Create a Task <i class="fas fa-folder-plus"></i></button> </div> <!-- Modal -->
+
+    <div class="row">
+        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#exampleModal">Create a Task <i class="fas fa-folder-plus"></i></button>
+    </div> <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -110,24 +115,31 @@ if (isset($_POST['tsubmit'])) {
         </div>
     </div>
 
-    <!-- tasks -->
-    <?php foreach ($tasks as $task) : ?>
-        <div class="col-12 mt-1">
-            <div class="card border-bottom-primary shadow h-100 py-1">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><?php echo $task['task_title'] ?></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
+    <div class="row mt-2">
+        <?php foreach ($tasks as $task) : ?>
+            <div class="col-md-6 col-lg-4 pb-3">
+
+                <!-- Add a style="height: XYZpx" to div.card to limit the card height and display scrollbar instead -->
+                <div class="card card-custom bg-white border-white border-0" style="height: 450px">
+                    <div class="card-custom-img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GYqztVQFH_AXSKtodc5zo93twNXk02FdYw&usqp=CAU');"></div>
+                    <div class="card-custom-avatar">
+                        <img class="img-fluid" src="<?php echo $task['user_profile']; ?>" alt="<?php echo $task['name'] . ' ' . $task['surname']; ?>" title="<?php echo $task['name'] . ' ' . $task['surname']; ?>" />
+                    </div>
+                    <div class="card-body" style="overflow-y: auto">
+                        <h4 class="card-title"><?php echo $task['task_title'] ?></h4>
+                        <?php if ($task['task_pcs'] != null) { ?>
+                            <h5 class="card-title">Pcs: <?php echo $task['task_pcs'] ?></h5>
+                        <?php } ?>
+                        <p class="card-text"><?php echo $task['task_desc'] ?></p>
+                    </div>
+                    <div class="card-footer" style="background: inherit; border-color: inherit;">
+                        <a href="?id=viewtask&taskid=<?php echo $task['task_id'] ?>" class="btn btn-primary">View Task</a>
                     </div>
                 </div>
+
             </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
 
 
 </div>
