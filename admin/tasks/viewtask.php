@@ -4,7 +4,6 @@ if (!$isAdmin) {
     exit;
 }
 
-
 $taskid = $_GET['taskid'] ?? null;
 
 if (!$taskid) {
@@ -16,6 +15,33 @@ $query = $connection->prepare("SELECT * FROM tasks t inner join users u on t.tas
 $query->bindValue(":taskid", $taskid);
 $query->execute();
 $task = $query->fetch(PDO::FETCH_ASSOC);
+
+$errors = [];
+if (isset($_POST['offer_submit'])) {
+    $oPrice = $_POST['offer_price'];
+    $oStartDate = $_POST['offer_sdate'];
+    $oEndDate = $_POST['offer_edate'];
+
+    if (!$oPrice) {
+        $errors[] = 'Offer Price is required!';
+    }
+
+    if (!$oStartDate || !$oEndDate) {
+        $errors[] = 'Offer Dates are required!';
+    }
+
+    if (empty($errors)) {
+        $query = $connection->prepare("INSERT INTO offers (offer_to, offer_price, offer_start, offer_end) VALUES (:offerto, :offerprice, :offerstart, :offerend) ");
+        $query->bindValue(':offerto', $taskid);
+        $query->bindValue(':offerprice', $oPrice);
+        $query->bindValue(':offerstart', $oStartDate);
+        $query->bindValue(':offerend', $oEndDate);
+
+        $query->execute();
+        $successMessage = "Successfully sent an offer to the task!";
+        header("Location: ?id=tasks");
+    }
+}
 
 
 ?>
@@ -45,22 +71,21 @@ $task = $query->fetch(PDO::FETCH_ASSOC);
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="h3 font-weight-bold text-primary text-uppercase mb-1  text-center"><i class="fas fa-arrow-left"></i> Make an offer</div>
-                            <form action="">
+                            <form method="POST">
                                 <div class="mb-2">
                                     <label class="form-label">Your Price (EUR)</label>
-                                    <input type="number" class="form-control">
+                                    <input type="number" name="offer_price" class="form-control">
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">I can start at: </label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" name="offer_sdate" class="form-control">
                                 </div>
                                 <div class="mb-2">
                                     <label class="form-label">I can finish at: </label>
-                                    <input type="date" class="form-control">
+                                    <input type="date" name="offer_edate" class="form-control">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Make Offer</button>
+                                <button type="submit" name="offer_submit" class="btn btn-primary">Make Offer</button>
                             </form>
-
                         </div>
                     </div>
                 </div>

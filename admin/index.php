@@ -34,6 +34,9 @@ if (isset($_GET['searchquery'])) {
     case 'viewtask':
       include "tasks/viewtask.php";
       break;
+    case 'viewoffers':
+      include "tasks/offers.php";
+      break;
     case 'user':
       include "profile/user.php";
       break;

@@ -69,7 +69,7 @@ $profile_picture = $user["user_profile"];
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Category 1
+                Tasks
             </div>
             <li class="nav-item">
                 <a class="nav-link" href="?id=tasks">
@@ -88,7 +88,7 @@ $profile_picture = $user["user_profile"];
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Category 2
+                Offers
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -96,9 +96,9 @@ $profile_picture = $user["user_profile"];
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="?id=viewoffers">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Link2</span></a>
+                    <span>View Offers</span></a>
             </li>
 
             <!-- Divider -->

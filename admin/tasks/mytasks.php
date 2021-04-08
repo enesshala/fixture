@@ -43,9 +43,9 @@ $tasks = $query->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="text-center">
                                         <a tabindex="0" class="btn btn-sm btn-secondary text-white" role="button" data-toggle="popover" data-trigger="focus" title="Pending Status" data-content="Pending Status means that this task an open task and waiting for people to take it!">pending</a>
                                     </td>
-                                <?php } elseif ($task['task_status'] == 'in progres') { ?>
+                                <?php } elseif ($task['task_status'] == 'in progress') { ?>
                                     <td class="text-center">
-                                        <a tabindex="0" class="btn btn-sm btn-info text-white" role="button" data-toggle="popover" data-trigger="focus" title="In Progress Status" data-content="In Progress Status means that this task is given to somebody and he is working on it!">in progress</a>
+                                        <a tabindex="0" class="btn btn-sm btn-info text-white" role="button" data-toggle="popover" data-trigger="focus" title="in progresss Status" data-content="in progresss Status means that this task is given to somebody and he is working on it!">in progresss</a>
                                     </td>
                                 <?php } elseif ($task['task_status'] == 'canceled') { ?>
                                     <td class="text-center"><span class="btn btn-sm btn-danger">canceled</span></td>
